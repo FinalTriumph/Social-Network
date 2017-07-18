@@ -1,0 +1,7 @@
+Database actions:
+
+CREATE TABLE users (id INT(11) UNSIGNED AUTO_INCREMENT PRIMARY KEY, username VARCHAR(32), password VARCHAR(60), email TEXT);
+
+CREATE TABLE login_tokens (id INT(11) UNSIGNED AUTO_INCREMENT PRIMARY KEY, token CHAR(64) NOT NULL, user_id INT(11) UNSIGNED NOT NULL, UNIQUE (token));
+
+ALTER TABLE login_tokens ADD FOREIGN KEY (user_id) REFERENCES users(id);
