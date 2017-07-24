@@ -3,6 +3,7 @@
 include('./classes/DB.php');
 include('./classes/Login.php');
 include('./classes/Post.php');
+include('./classes/Comment.php');
 
 $showTimeline = false;
 
@@ -15,6 +16,10 @@ if (Login::isLoggedIn()) {
 
 if (isset($_GET['postid'])) {
     Post::likePost($_GET['postid'], $userid);
+}
+
+if (isset($_POST['comment'])) {
+    Comment::createComment($_POST['commentbody'], $_GET['commentedpostid'], $userid);
 }
 
 // change follower_id
@@ -36,6 +41,14 @@ foreach($followingposts as $post) {
     }
     echo "<span>".$post['likes']." likes</span>
         </form>
+        
+        <form action='index.php?commentedpostid=".$post['id']."' method='post'>
+            <textarea name='commentbody' rows='3' cols='50'></textarea>
+            <input type='submit' name='comment' value='Comment'>
+        </form>
+        ";
+        Comment::displayComments($post['id']);
+        echo "
         <hr /><br />";
      
 }
