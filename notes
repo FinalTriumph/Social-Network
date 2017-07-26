@@ -27,3 +27,7 @@ CREATE TABLE comments (id INT(11) UNSIGNED AUTO_INCREMENT PRIMARY KEY, comment T
 ALTER TABLE comments ADD FOREIGN KEY (user_id) REFERENCES users(id);
 
 ALTER TABLE comments ADD FOREIGN KEY (post_id) REFERENCES posts(id);
+
+ALTER TABLE users ADD profileimg VARCHAR(255);
+
+ALTER TABLE posts ADD postimg VARCHAR(255);

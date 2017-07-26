@@ -19,7 +19,7 @@ if (isset($_POST['createaccount'])) {
                         
                         if (strlen($password) > 5 && strlen($password) < 60) {
                     
-                            DB::query('INSERT INTO users VALUES (\'\', :username, :password, :email, \'0\')', array(':username'=>$username, ':password'=>password_hash($password, PASSWORD_BCRYPT), ':email'=>$email));
+                            DB::query('INSERT INTO users VALUES (\'\', :username, :password, :email, \'0\', \'\')', array(':username'=>$username, ':password'=>password_hash($password, PASSWORD_BCRYPT), ':email'=>$email));
                             echo "Success!";
                         
                         } else {
