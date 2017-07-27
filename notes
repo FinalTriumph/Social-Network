@@ -31,3 +31,13 @@ ALTER TABLE comments ADD FOREIGN KEY (post_id) REFERENCES posts(id);
 ALTER TABLE users ADD profileimg VARCHAR(255);
 
 ALTER TABLE posts ADD postimg VARCHAR(255);
+
+ALTER TABLE comments DROP FOREIGN KEY comments_ibfk_1;
+
+ALTER TABLE comments DROP FOREIGN KEY comments_ibfk_2;
+
+ALTER TABLE post_likes DROP FOREIGN KEY post_likes_ibfk_1;
+
+ALTER TABLE post_likes DROP FOREIGN KEY post_likes_ibfk_2;
+
+CREATE TABLE notifications (id INT(11) UNSIGNED AUTO_INCREMENT PRIMARY KEY, type INT(11) UNSIGNED NOT NULL, receiver INT(11) UNSIGNED NOT NULL, sender INT(11) UNSIGNED NOT NULL);

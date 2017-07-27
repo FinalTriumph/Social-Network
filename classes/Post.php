@@ -12,6 +12,18 @@ class Post {
         $topics = self::getTopics($postbody);
             
         if ($loggedInUserId == $userid) {
+            
+            if (count(Notify::createNotify($postbody)) > 0) {
+                foreach(Notify::createNotify($postbody) as $key => $n) {
+                    
+                    $r = DB::query('SELECT id FROM users WHERE username=:username', array(':username'=>$key))[0]['id'];
+                    $s = $loggedInUserId;
+                    
+                    if ($r !== 0) {
+                        DB::query('INSERT INTO notifications VALUES (\'\', :type, :receiver, :sender, :extra)', array(':type'=>$n["type"], 'receiver'=>$r, ':sender'=>$s, ':extra'=>$n["extra"]));
+                    }
+                }
+            }
                 
             DB::query('INSERT INTO posts VALUES (\'\', :postbody, NOW(), :userid, 0, \'\', :topics)', array(':postbody'=>$postbody, ':userid'=>$userid, ':topics'=>$topics));
         } else {
@@ -19,7 +31,6 @@ class Post {
         }
     }
     
-    //////////////////////////////
     public static function createImgPost($postbody, $loggedInUserId, $userid) {
         
             
@@ -30,6 +41,18 @@ class Post {
         $topics = self::getTopics($postbody);
             
         if ($loggedInUserId == $userid) {
+            
+            if (count(Notify::createNotify($postbody)) > 0) {
+                foreach(Notify::createNotify($postbody) as $key => $n) {
+                    
+                    $r = DB::query('SELECT id FROM users WHERE username=:username', array(':username'=>$key))[0]['id'];
+                    $s = $loggedInUserId;
+                    
+                    if ($r !== 0) {
+                        DB::query('INSERT INTO notifications VALUES (\'\', :type, :receiver, :sender, :extra)', array(':type'=>$n["type"], 'receiver'=>$r, ':sender'=>$s, ':extra'=>$n["extra"]));
+                    }
+                }
+            }
                 
             DB::query('INSERT INTO posts VALUES (\'\', :postbody, NOW(), :userid, 0, \'\', :topics)', array(':postbody'=>$postbody, ':userid'=>$userid, ':topics'=>$topics));
             $postid = DB::query('SELECT id FROM posts WHERE user_id=:userid ORDER BY id DESC LIMIT 1', array(':userid'=>$userid))[0]['id'];
@@ -39,13 +62,13 @@ class Post {
             die('Incorrect user!');
         }
     }
-    //////////////////////////////////
     
     public static function likePost($postid, $likerid) {
         if (!DB::query('SELECT user_id FROM post_likes WHERE post_id=:postid AND user_id=:userid', array(':postid'=>$postid, ':userid'=>$likerid))) {
             
             DB::query('UPDATE posts SET likes=likes+1 WHERE id=:postid', array(':postid'=>$postid));
             DB::query('INSERT INTO post_likes VALUES (\'\', :postid, :userid)', array(':postid'=>$postid, ':userid'=>$likerid));
+            Notify::createNotify("", $postid);
         } else {
             
             DB::query('UPDATE posts SET likes=likes-1 WHERE id=:postid', array(':postid'=>$postid));
@@ -83,27 +106,35 @@ class Post {
         return $newstring;
     }
     
-    public static function displayPosts($userid, $username, $followerid) {
+    public static function displayPosts($userid, $username, $loggedInUserId) {
         $dbposts = DB::query('SELECT * FROM posts WHERE user_id=:userid ORDER BY id DESC', array(':userid'=>$userid));
         $posts = "";
         
         foreach($dbposts as $p) {
             
-            if (!DB::query('SELECT post_id FROM post_likes WHERE post_id=:postid AND user_id=:userid', array(':postid'=>$p['id'], 'userid'=>$followerid))) {
+            if (!DB::query('SELECT post_id FROM post_likes WHERE post_id=:postid AND user_id=:userid', array(':postid'=>$p['id'], 'userid'=>$loggedInUserId))) {
                 
                 $posts .= "<img src='".$p['postimg']."' style='max-height: 300px'><br />".self::link_add($p['body'])."
                 <form action='profile.php?username=$username&postid=".$p['id']."' method='post'>
                     <input type='submit' name='like' value='Like'>
                     <span>".$p['likes']." likes</span>
-                </form>
-                <hr /><br />";
+                ";
+                if ($userid == $loggedInUserId) {
+                    $posts .= "<input type='submit' name='deletepost' value='x' >";
+                }
+                $posts .= "
+                </form><hr /><br />";
             } else {
                 $posts .= "<img src='".$p['postimg']."' style='max-height: 300px'><br />".self::link_add($p['body'])."
                 <form action='profile.php?username=$username&postid=".$p['id']."' method='post'>
                     <input type='submit' name='unlike' value='Unlike'>
                     <span>".$p['likes']." likes</span>
-                </form>
-                <hr /><br />";
+                ";
+                if ($userid == $loggedInUserId) {
+                    $posts .= "<input type='submit' name='deletepost' value='x' >";
+                }
+                $posts .= "
+                </form><hr /><br />";
             }
         }
         return $posts;

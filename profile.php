@@ -4,6 +4,7 @@ include('./classes/DB.php');
 include('./classes/Login.php');
 include('./classes/Post.php');
 include('./classes/Image.php');
+include('./classes/Notify.php');
 
 $username = '';
 $verified = false;
@@ -61,6 +62,16 @@ if (isset($_GET['username'])) {
         }
         ///////
         
+        if (isset($_POST['deletepost'])) {
+            if (DB::query('SELECT id FROM posts WHERE id=:postid AND user_id=:userid', array(':postid'=>$_GET['postid'], ':userid'=>$followerid))) {
+                
+                DB::query('DELETE FROM posts WHERE id=:postid AND user_id=:userid', array(':postid'=>$_GET['postid'], ':userid'=>$followerid));
+                DB::query('DELETE FROM post_likes WHERE post_id=:postid', array(':postid'=>$_GET['postid']));
+                DB::query('DELETE FROM comments WHERE post_id=:postid', array(':postid'=>$_GET['postid']));
+                echo 'Post Deleted!';
+            }
+        }
+        
         if (isset($_POST['post'])) {
             
             if ($_FILES['postimg']['size'] == 0) {
@@ -72,7 +83,7 @@ if (isset($_GET['username'])) {
             }
         }
         
-        if (isset($_GET['postid'])) {
+        if (isset($_GET['postid']) && !isset($_POST['deletepost'])) {
             Post::likePost($_GET['postid'], $followerid);
             
         }

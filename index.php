@@ -4,6 +4,7 @@ include('./classes/DB.php');
 include('./classes/Login.php');
 include('./classes/Post.php');
 include('./classes/Comment.php');
+include('./classes/Notify.php');
 
 $showTimeline = false;
 
