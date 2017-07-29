@@ -1,6 +1,7 @@
 <?php 
 
 include('classes/DB.php');
+include('classes/Mail.php');
 
 if (isset($_POST['createaccount'])) {
     $username = $_POST['username'];
@@ -20,6 +21,7 @@ if (isset($_POST['createaccount'])) {
                         if (strlen($password) > 5 && strlen($password) < 60) {
                     
                             DB::query('INSERT INTO users VALUES (\'\', :username, :password, :email, \'0\', \'\')', array(':username'=>$username, ':password'=>password_hash($password, PASSWORD_BCRYPT), ':email'=>$email));
+                            Mail::sendMail('Welcome to our Social Network!', 'Your account has been created!', $email);
                             echo "Success!";
                         
                         } else {
