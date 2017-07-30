@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="UTF-8">
+  <title>Login</title>
+  <link rel="stylesheet" type="text/css" href="public/css/style.css">
+</head>
+
+<body>
+    
+    <h1>Login to your account</h1>
+    <form action="login.php" method="post">
+        <input type="text" name="username" id="username" value="" placeholder="Username ..."><p />
+        <input type="password" name="password" id="password" value="" placeholder="Password ..."><p />
+        <input type="button" name="login" id="login" value="Login">
+    </form>
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.js"></script>
+    <script type="text/javascript">
+    /* global $ */
+        $('#login').click(function() {
+            $.ajax({
+                type: "POST",
+                url: 'api/auth',
+                processData: false,
+                contentType: 'application/json',
+                data: '{ "username": "' + $("#username").val() + '", "password": "' + $("#password").val() + '" }',
+                success: function(res) {
+                    console.log(JSON.parse(res));
+                },
+                error: function(res) {
+                    console.log(JSON.parse(res.responseText));
+                    $("#login").addClass('shaking');
+                    setTimeout(function() {
+                        $("#login").removeClass('shaking');
+                    }, 1000);
+                }
+            });
+        });
+    </script>
+    
+</body>
+
+</html>

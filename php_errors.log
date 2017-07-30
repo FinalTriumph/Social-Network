@@ -1,0 +1,40 @@
+[30-Jul-2017 09:38:24 UTC] PHP Warning:  file_get_contents(php:://input): failed to open stream: No such file or directory in /home/ubuntu/workspace/api/index.php on line 20
+[30-Jul-2017 09:38:24 UTC] PHP Stack trace:
+[30-Jul-2017 09:38:24 UTC] PHP   1. {main}() /home/ubuntu/workspace/api/index.php:0
+[30-Jul-2017 09:38:24 UTC] PHP   2. file_get_contents() /home/ubuntu/workspace/api/index.php:20
+[30-Jul-2017 09:39:01 UTC] PHP Warning:  file_get_contents(php:://input): failed to open stream: No such file or directory in /home/ubuntu/workspace/api/index.php on line 20
+[30-Jul-2017 09:39:01 UTC] PHP Stack trace:
+[30-Jul-2017 09:39:01 UTC] PHP   1. {main}() /home/ubuntu/workspace/api/index.php:0
+[30-Jul-2017 09:39:01 UTC] PHP   2. file_get_contents() /home/ubuntu/workspace/api/index.php:20
+[30-Jul-2017 09:42:07 UTC] PHP Warning:  file_get_contents(php:://input): failed to open stream: No such file or directory in /home/ubuntu/workspace/api/index.php on line 20
+[30-Jul-2017 09:42:07 UTC] PHP Stack trace:
+[30-Jul-2017 09:42:07 UTC] PHP   1. {main}() /home/ubuntu/workspace/api/index.php:0
+[30-Jul-2017 09:42:07 UTC] PHP   2. file_get_contents() /home/ubuntu/workspace/api/index.php:20
+[30-Jul-2017 09:48:56 UTC] PHP Warning:  file_get_contents(php:://input): failed to open stream: No such file or directory in /home/ubuntu/workspace/api/index.php on line 20
+[30-Jul-2017 09:48:56 UTC] PHP Stack trace:
+[30-Jul-2017 09:48:56 UTC] PHP   1. {main}() /home/ubuntu/workspace/api/index.php:0
+[30-Jul-2017 09:48:56 UTC] PHP   2. file_get_contents() /home/ubuntu/workspace/api/index.php:20
+[30-Jul-2017 09:49:01 UTC] PHP Warning:  file_get_contents(php:://input): failed to open stream: No such file or directory in /home/ubuntu/workspace/api/index.php on line 20
+[30-Jul-2017 09:49:01 UTC] PHP Stack trace:
+[30-Jul-2017 09:49:01 UTC] PHP   1. {main}() /home/ubuntu/workspace/api/index.php:0
+[30-Jul-2017 09:49:01 UTC] PHP   2. file_get_contents() /home/ubuntu/workspace/api/index.php:20
+[30-Jul-2017 09:50:08 UTC] PHP Warning:  file_get_contents(php:://input): failed to open stream: No such file or directory in /home/ubuntu/workspace/api/index.php on line 20
+[30-Jul-2017 09:50:08 UTC] PHP Stack trace:
+[30-Jul-2017 09:50:08 UTC] PHP   1. {main}() /home/ubuntu/workspace/api/index.php:0
+[30-Jul-2017 09:50:08 UTC] PHP   2. file_get_contents() /home/ubuntu/workspace/api/index.php:20
+[30-Jul-2017 09:50:51 UTC] PHP Warning:  file_get_contents(php:://input): failed to open stream: No such file or directory in /home/ubuntu/workspace/api/index.php on line 20
+[30-Jul-2017 09:50:51 UTC] PHP Stack trace:
+[30-Jul-2017 09:50:51 UTC] PHP   1. {main}() /home/ubuntu/workspace/api/index.php:0
+[30-Jul-2017 09:50:51 UTC] PHP   2. file_get_contents() /home/ubuntu/workspace/api/index.php:20
+[30-Jul-2017 09:55:28 UTC] PHP Warning:  file_get_contents(php:://input): failed to open stream: No such file or directory in /home/ubuntu/workspace/api/index.php on line 20
+[30-Jul-2017 09:55:28 UTC] PHP Stack trace:
+[30-Jul-2017 09:55:28 UTC] PHP   1. {main}() /home/ubuntu/workspace/api/index.php:0
+[30-Jul-2017 09:55:28 UTC] PHP   2. file_get_contents() /home/ubuntu/workspace/api/index.php:20
+[30-Jul-2017 09:57:16 UTC] PHP Warning:  file_get_contents(php:://input): failed to open stream: No such file or directory in /home/ubuntu/workspace/api/index.php on line 20
+[30-Jul-2017 09:57:16 UTC] PHP Stack trace:
+[30-Jul-2017 09:57:16 UTC] PHP   1. {main}() /home/ubuntu/workspace/api/index.php:0
+[30-Jul-2017 09:57:16 UTC] PHP   2. file_get_contents() /home/ubuntu/workspace/api/index.php:20
+[30-Jul-2017 09:57:26 UTC] PHP Warning:  file_get_contents(php:://input): failed to open stream: No such file or directory in /home/ubuntu/workspace/api/index.php on line 20
+[30-Jul-2017 09:57:26 UTC] PHP Stack trace:
+[30-Jul-2017 09:57:26 UTC] PHP   1. {main}() /home/ubuntu/workspace/api/index.php:0
+[30-Jul-2017 09:57:26 UTC] PHP   2. file_get_contents() /home/ubuntu/workspace/api/index.php:20
