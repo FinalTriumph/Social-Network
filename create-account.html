@@ -3,38 +3,39 @@
 
 <head>
   <meta charset="UTF-8">
-  <title>Login</title>
+  <title>Register</title>
   <link href="https://fonts.googleapis.com/css?family=Catamaran" rel="stylesheet">
   <link rel="stylesheet" type="text/css" href="public/css/style.css">
 </head>
 
 <body>
     
-    <h1>Login to your account</h1>
-    <form action="login.php" method="post">
+    <h1>Register</h1>
+    <form action="create-account.php" method="post">
         <input type="text" name="username" id="username" value="" placeholder="Username ..."><p />
+        <input type="email" name="email" id="email" value="" placeholder="Email ..."><p />
         <input type="password" name="password" id="password" value="" placeholder="Password ..."><p />
-        <input type="button" name="login" id="login" value="Log In">
+        <input type="button" name="createaccount" id="ca" value="Create Account"><p />
     </form>
     
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.js"></script>
     <script type="text/javascript">
     /* global $ */
-        $('#login').click(function() {
+        $('#ca').click(function() {
             $.ajax({
                 type: "POST",
-                url: 'api/auth',
+                url: 'api/users',
                 processData: false,
                 contentType: 'application/json',
-                data: '{ "username": "' + $("#username").val() + '", "password": "' + $("#password").val() + '" }',
+                data: '{ "username": "' + $("#username").val() + '", "email": "' + $("#email").val() + '", "password": "' + $("#password").val() + '" }',
                 success: function(res) {
                     console.log(JSON.parse(res));
                 },
                 error: function(res) {
                     console.log(JSON.parse(res.responseText));
-                    $("#login").addClass('shaking');
+                    $("#ca").addClass('shaking');
                     setTimeout(function() {
-                        $("#login").removeClass('shaking');
+                        $("#ca").removeClass('shaking');
                     }, 1000);
                 }
             });
