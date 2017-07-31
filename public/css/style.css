@@ -1,6 +1,8 @@
 body {
     text-align: center;
     font-family: 'Catamaran', sans-serif;
+    margin: 0;
+    margin-bottom: 50px;
 }
 input {
     width: 20em;
@@ -40,4 +42,37 @@ input[type='button']:hover {
   40%, 60% {
     transform: translate3d(4px, 0, 0);
   }
+}
+#heading {
+  background-color: #fafafa;
+  border-bottom: 1px solid #777;
+  padding: 0.5em;
+}
+#heading input {
+  width: 10em;
+  padding: 0.2em 0.5em;
+}
+.post {
+  width: 70%;
+  margin: auto;
+  text-align: left;
+  background-color: #fafafa;
+  border: 1px solid #eee;
+  border-bottom: 5px solid #eee;
+  padding: 2em;
+}
+.post p {
+  font-size: 1.5em;
+  margin: 0;
+}
+.post button {
+  background-color: #fafafa;
+  border: none;
+  margin: auto auto auto 2em;
+  cursor: pointer;
+  font-size: 0.9em;
+}
+.post_footer {
+  font-size: 1em;
+  color: #777;
 }

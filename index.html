@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="UTF-8">
+  <title>Social Network</title>
+  <link href="https://fonts.googleapis.com/css?family=Catamaran" rel="stylesheet">
+  <link rel="stylesheet" type="text/css" href="public/css/style.css">
+</head>
+
+<body>
+    
+    <div id="heading">
+        <form action="index.php" method="post">
+            <input type="text" name="searchbox" value="">
+            <input type="button" name="search" value="Search">
+        </form>
+    </div>
+    
+    <h1>Timeline</h1>
+    
+    <div id="timeline"></div>
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.js"></script>
+    <script type="text/javascript">
+    /* global $ */
+        $(document).ready(function() {
+            
+            $.ajax({
+                type: "GET",
+                url: 'api/posts',
+                processData: false,
+                contentType: 'application/json',
+                data: '',
+                success: function(res) {
+                    var posts = JSON.parse(res);
+                    $.each(posts, function(index) {
+                        
+                        $("#timeline").append(
+                            '<div class="post"><p>'+posts[index].PostBody+'</p><div class="post_footer"> - Posted by '+posts[index].PostedBy+' on '+posts[index].PostDate+'<button>'+posts[index].Likes+' Likes</button><button>Comments</button></div></div>'
+                            );
+                        
+                    });
+                },
+                error: function(res) {
+                    console.log(JSON.parse(res.responseText));
+                }
+            });
+        });
+    </script>
+    
+</body>
+
+</html>

@@ -12,7 +12,7 @@ if (Login::isLoggedIn()) {
     $userid = Login::isLoggedIn();
     $showTimeline = true;
 } else {
-    echo 'Not logged in';
+    die('Not logged in');
 }
 
 if (isset($_GET['postid'])) {
