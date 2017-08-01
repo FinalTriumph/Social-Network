@@ -4,6 +4,10 @@ body {
     margin: 0;
     margin-bottom: 50px;
 }
+h1 {
+  margin: 0.2em 20%;
+  text-align: left;
+}
 input {
     width: 20em;
     padding: 0.5em 1em;
@@ -47,19 +51,21 @@ input[type='button']:hover {
   background-color: #fafafa;
   border-bottom: 1px solid #777;
   padding: 0.5em;
+  text-align: left;
+  padding-left: 25%;
 }
 #heading input {
   width: 10em;
   padding: 0.2em 0.5em;
 }
 .post {
-  width: 70%;
+  width: 60%;
   margin: auto;
   text-align: left;
   background-color: #fafafa;
   border: 1px solid #eee;
   border-bottom: 5px solid #eee;
-  padding: 2em;
+  padding: 2em 5em;
 }
 .post p {
   font-size: 1.5em;
@@ -75,4 +81,35 @@ input[type='button']:hover {
 .post_footer {
   font-size: 1em;
   color: #777;
+}
+.comments {
+  display: none;
+  background-color: #fdfdfd;
+}
+.comments p {
+  font-size: 1em;
+  color: #444;
+  margin: 1em 3em;
+}
+#searchboxresults {
+  background-color: #fff;
+  border: 1px solid #ddd;
+  min-width: 9.1em;
+  top: 2.4em;
+  left: 25%;
+  position: absolute;
+  display: none;
+  text-align: left;
+}
+.search-result p{
+  padding: 0.2em 0.7em;
+  margin: 0;
+  cursor: pointer;
+}
+#searchboxresults a{
+  color: #444;
+  text-decoration: none;
+}
+.search-result p:hover {
+  background-color: #eee;
 }

@@ -12,7 +12,9 @@
     
     <div id="heading">
         <form action="index.php" method="post">
-            <input type="text" name="searchbox" value="">
+            <input type="text" name="searchbox" id="searchbox" value="">
+            <div id=searchboxresults>
+            </div>
             <input type="button" name="search" value="Search">
         </form>
     </div>
@@ -26,6 +28,49 @@
     /* global $ */
         $(document).ready(function() {
             
+            $("#searchbox").keyup(function() {
+                
+                $("#searchboxresults").html('');
+                
+                $.ajax({
+                    type: "GET",
+                    url: 'api/search?query=' + $(this).val(),
+                    processData: false,
+                    contentType: 'application/json',
+                    data: '',
+                    success: function(res) {
+                        var results = JSON.parse(res);
+                        if (results.length > 0) {
+                            $.each(results, function(index) {
+                                $("#searchboxresults").append('<a href="profile.php?username='+results[index].username+'#'+results[index].id+'"><div class="search-result"><p>'+results[index].body+'</p></div></a>');
+                            });
+                        
+                            $("#searchboxresults").css('display', 'block');
+                            
+                        } else {
+                            $("#searchboxresults").css('display', 'none');
+                        }
+                    },
+                    error: function(res) {
+                        console.log(JSON.parse(res.responseText));
+                    }
+                });
+                
+                
+                
+            });
+            
+            
+            //$('.search-result').mousedown(function(e) {
+                //return(e);
+            //});
+            
+            $("#searchbox").blur(function() {
+                setTimeout(function() {
+                    $("#searchboxresults").css('display', 'none');
+                }, 200);
+            });
+            
             $.ajax({
                 type: "GET",
                 url: 'api/posts',
@@ -37,10 +82,63 @@
                     $.each(posts, function(index) {
                         
                         $("#timeline").append(
-                            '<div class="post"><p>'+posts[index].PostBody+'</p><div class="post_footer"> - Posted by '+posts[index].PostedBy+' on '+posts[index].PostDate+'<button>'+posts[index].Likes+' Likes</button><button>Comments</button></div></div>'
+                            '<div class="post"><p>'+posts[index].PostBody+'</p><div class="post_footer"> - Posted by '+posts[index].PostedBy+' on '+posts[index].PostDate+'<button data-id="'+posts[index].PostId+'">'+posts[index].Likes+' Likes</button><button data-postid="'+posts[index].PostId+'">Comments</button></div><div class="comments" data-commentsdiv="'+posts[index].PostId+'"><hr /></div></div>'
                             );
                         
                     });
+                    
+                    $('[data-id]').click(function() {
+                        var buttonid = $(this).attr('data-id');
+                        $.ajax({
+                            type: "POST",
+                            url: 'api/likes?id=' + $(this).attr('data-id'),
+                            processData: false,
+                            contentType: 'application/json',
+                            data: '',
+                            success: function(res) {
+                                var likes = JSON.parse(res).Likes;
+                                $('[data-id="'+buttonid+'"]').html(likes + ' Likes');
+                            },
+                            error: function() {
+                                console.log(JSON.parse(res.responseText));
+                            }
+                        });
+                    });
+                    
+                    $('[data-postid]').click(function() { 
+                        var buttonid = $(this).attr('data-postid');
+                        if ($('[data-commentsdiv="'+buttonid+'"]').css('display') == 'block') {
+                            $('[data-commentsdiv="'+buttonid+'"]').css('display', 'none');
+                            $('[data-commentsdiv="'+buttonid+'"]').html('<hr />');
+                        } else {
+                            $('[data-commentsdiv="'+buttonid+'"]').css('display', 'block');
+                            $('[data-commentsdiv="'+buttonid+'"]').html('<hr /><p>Loading comments...</p><hr />');
+                            $.ajax({
+                                type: "GET",
+                                url: 'api/comments?postid=' + $(this).attr('data-postid'),
+                                processData: false,
+                                contentType: 'application/json',
+                                data: '',
+                                success: function(res) {
+                                    $('[data-commentsdiv="'+buttonid+'"]').html('<hr />');
+                                    if (res == "No comments") {
+                                        $('[data-commentsdiv="'+buttonid+'"]').append('<p>No comments to show</p><hr />');
+                                    } else {
+                                        var comments = JSON.parse(res);
+                                        $.each(comments, function(index) {
+                                            $('[data-commentsdiv="'+buttonid+'"]').append('<p>'+comments[index]['Comment']+'<br />From '+comments[index]['CommentedBy']+' - '+comments[index]['CommentedAt']+'</p><hr />');
+                                        });
+                                    }
+                                },
+                                error: function(res) {
+                                    $('[data-commentsdiv="'+buttonid+'"]').html("<hr /><p>Error: couldn't load comments properly</p>");
+                                    console.log(JSON.parse(res.responseText));
+                                }
+                            });
+                        }
+                        
+                    });
+                    
                 },
                 error: function(res) {
                     console.log(JSON.parse(res.responseText));
