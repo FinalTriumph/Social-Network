@@ -30,7 +30,8 @@
             
             $("#searchbox").keyup(function() {
                 
-                $("#searchboxresults").html('');
+                $("#searchboxresults").html('<div class="search-result"><p>...</p></div>');
+                $("#searchboxresults").css('display', 'block');
                 
                 $.ajax({
                     type: "GET",
@@ -41,14 +42,16 @@
                     success: function(res) {
                         var results = JSON.parse(res);
                         if (results.length > 0) {
+                            $("#searchboxresults").html('');
                             $.each(results, function(index) {
                                 $("#searchboxresults").append('<a href="profile.php?username='+results[index].username+'#'+results[index].id+'"><div class="search-result"><p>'+results[index].body+'</p></div></a>');
                             });
                         
-                            $("#searchboxresults").css('display', 'block');
+                            //$("#searchboxresults").css('display', 'block');
                             
                         } else {
                             $("#searchboxresults").css('display', 'none');
+                            $("#searchboxresults").html('');
                         }
                     },
                     error: function(res) {
@@ -59,11 +62,6 @@
                 
                 
             });
-            
-            
-            //$('.search-result').mousedown(function(e) {
-                //return(e);
-            //});
             
             $("#searchbox").blur(function() {
                 setTimeout(function() {
@@ -82,7 +80,7 @@
                     $.each(posts, function(index) {
                         
                         $("#timeline").append(
-                            '<div class="post"><p>'+posts[index].PostBody+'</p><div class="post_footer"> - Posted by '+posts[index].PostedBy+' on '+posts[index].PostDate+'<button data-id="'+posts[index].PostId+'">'+posts[index].Likes+' Likes</button><button data-postid="'+posts[index].PostId+'">Comments</button></div><div class="comments" data-commentsdiv="'+posts[index].PostId+'"><hr /></div></div>'
+                            '<div class="post"><p>'+posts[index].PostBody+'</p><img src="'+posts[index].PostImage+'" /><div class="post_footer"> - Posted by '+posts[index].PostedBy+' on '+posts[index].PostDate+'<button data-id="'+posts[index].PostId+'">'+posts[index].Likes+' Likes</button><button data-postid="'+posts[index].PostId+'">Comments</button></div><div class="comments" data-commentsdiv="'+posts[index].PostId+'"><hr /></div></div>'
                             );
                         
                     });

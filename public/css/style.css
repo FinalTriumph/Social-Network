@@ -19,7 +19,7 @@ input[type='button'] {
   border-radius: 2px;
   cursor: pointer;
 }
-input[type='button']:hover {
+input[type='button']:hover, #new_post_btn:hover {
   background-color: #fafafa;
 }
 
@@ -78,6 +78,9 @@ input[type='button']:hover {
   cursor: pointer;
   font-size: 0.9em;
 }
+.post img {
+  max-width: 100%;
+}
 .post_footer {
   font-size: 1em;
   color: #777;
@@ -112,4 +115,60 @@ input[type='button']:hover {
 }
 .search-result p:hover {
   background-color: #eee;
+}
+#h1_username {
+  display: inline-block;
+  margin: 0.2em 0px 0.2em 15%;
+  width: 40%;
+}
+#new_post_btn {
+  display: inline-block;
+  width: 20%;
+  min-height: 3em;
+  margin: auto 15% auto 0px;
+  background-color: #fff;
+  border: 1px solid #000;
+  border-radius: 2px;
+  cursor: pointer;
+}
+#foll_unfoll_form {
+  display: inline-block;
+  width: 20%;
+  margin: auto 15% auto 0px;
+  
+}
+#foll_unfoll_btn {
+  min-height: 3em;
+  background-color: #fff;
+  border: 1px solid #000;
+  border-radius: 2px;
+  cursor: pointer;
+}
+#new_post_form {
+  display: none;
+  margin: 1em auto;
+  background-color: #fafafa;
+  border: 1px solid #eee;
+  width: 73%;
+}
+#close_form {
+  font-size: 2em;
+  width: 2em;
+  padding: 0em;
+  margin: 0em;
+  margin-left: -2em;
+  border: none;
+  float: right;
+  background-color: #fafafa;
+  color: #444;
+}
+#close_form:hover, .post_btn:hover, #foll_unfoll_btn:hover {
+  background-color: #fafafa;
+  color: #000;
+}
+.post_btn {
+  background-color: #fff;
+  border: 1px solid #000;
+  border-radius: 2px;
+  cursor: pointer;
 }

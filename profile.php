@@ -143,7 +143,31 @@ if (isset($_GET['username'])) {
         </form>
     </div>-->
     
-    <h1><?php echo $username; ?>'s Profile<?php if ($verified) { echo ' - Verified'; } ?></h1>
+    <h1 id="h1_username"><?php echo $username; ?>'s Profile<?php if ($verified) { echo ' - Verified'; } ?> </h1>
+    
+    <?php 
+    if ($userid !== $followerid) {
+        echo '<form id="foll_unfoll_form" action="profile.php?username='.$username.'" method="post">';
+        if ($isFollowing) {
+            echo '<input type="submit" name="unfollow" id="foll_unfoll_btn" value="Unfollow">';
+        } else {
+            echo '<input type="submit" name="follow" id="foll_unfoll_btn" value="Follow">';
+        }
+        echo '</form>';
+    } else { 
+        echo '<button id="new_post_btn">NEW POST</button>';
+    
+    
+        echo '<form id="new_post_form" action="profile.php?username=<?php echo $username; ?>" method="post" enctype="multipart/form-data">';
+            echo '<input type="button" name="close" id="close_form" value="x"><br /><br />';
+            echo '<textarea name="postbody" rows="8" cols="80"></textarea>';
+            echo '<br />Upload an image:';
+            echo '<input type="file" name="postimg" class="post_btn">';
+            echo '<input type="submit" name="post" class="post_btn" value="Post">';
+        echo '</form>';
+        
+    }
+    ?>
     
     <div id="timeline"></div>
     
@@ -169,8 +193,9 @@ if (isset($_GET['username'])) {
                     var posts = JSON.parse(res);
                     $.each(posts, function(index) {
                         
+                        
                         $("#timeline").append(
-                            '<div class="post" id="'+posts[index].PostId+'"><p>'+posts[index].PostBody+'</p><div class="post_footer"> - Posted by '+posts[index].PostedBy+' on '+posts[index].PostDate+'<button data-id="'+posts[index].PostId+'">'+posts[index].Likes+' Likes</button><button data-postid="'+posts[index].PostId+'">Comments</button></div><div class="comments" data-commentsdiv="'+posts[index].PostId+'"><hr /></div></div>'
+                            '<div class="post" id="'+posts[index].PostId+'"><p>'+posts[index].PostBody+'</p><img src="'+posts[index].PostImage+'" /><div class="post_footer"> - Posted by '+posts[index].PostedBy+' on '+posts[index].PostDate+'<button data-id="'+posts[index].PostId+'">'+posts[index].Likes+' Likes</button><button data-postid="'+posts[index].PostId+'">Comments</button></div><div class="comments" data-commentsdiv="'+posts[index].PostId+'"><hr /></div></div>'
                             );
                         
                     });
@@ -232,6 +257,13 @@ if (isset($_GET['username'])) {
                     console.log(JSON.parse(res.responseText));
                 }
             });
+        });
+        
+        $("#new_post_btn").click(function() {
+            $("#new_post_form").slideDown(300);
+        });
+        $("#close_form").click(function() {
+            $("#new_post_form").slideUp(300);
         });
     </script>
     

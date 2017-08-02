@@ -4,10 +4,10 @@ class Image {
     
     public static function uploadImage($formname, $query, $params) {
         $image = base64_encode(file_get_contents($_FILES[$formname]['tmp_name']));
-    
+        
         $options = array('http'=>array(
             'method'=>"POST",
-            'header'=>"Authorization: Bearer 573bf7fa36cb920161bb6cfd148122354581583b\n".
+            'header'=>"Authorization: Bearer 8b692d2c84cfdc5b31866f7895eb45e7552a4959\n".
             "Content-Type: application/x-www-form-urlencoded",
             'content'=>$image
         ));
