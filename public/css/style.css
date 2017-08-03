@@ -175,3 +175,56 @@ input[type='button']:hover, #new_post_btn:hover {
 .bottom_msg {
   margin-top: 2em;
 }
+#messages_from {
+  background-color: #eee;
+  display: inline-block;
+  vertical-align: top;
+  width: 20%;
+}
+#messages_from p {
+  margin: 0.2em auto;
+  background-color: #fff;
+  text-align: left;
+}
+#messages_body {
+  background-color: #eee;
+  display: inline-block;
+  vertical-align: top;
+  width: 50%;
+}
+.left-message, .right-message {
+  width: 100%;
+  background-color: #fff;
+  text-align: left;
+}
+.left-message p {
+  width: 46%;
+  background-color: #222;
+  color: #fff;
+  border-radius: 5px;
+  padding: 2%;
+  margin: 0.2em 0em;
+}
+.right-message p {
+  width: 46%;
+  background-color: #777;
+  color: #fff;
+  margin: 0.2em 0em;
+  margin-left: 50%;
+  border-radius: 5px;
+  padding: 2%;
+}
+#send_textarea {
+  width: 96%;
+  height: 3.5em;
+  padding: 1.5%;
+  margin: 0.5em auto;
+  resize: none;
+  font-family: 'Catamaran', sans-serif;
+}
+#send_msg_btn {
+  padding-top: 0.4em;
+  padding-bottom: 0.3em;
+  width: 90%;
+  border-color: #ddd;
+}

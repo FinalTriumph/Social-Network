@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="UTF-8">
+  <title>Messages</title>
+  <link href="https://fonts.googleapis.com/css?family=Catamaran" rel="stylesheet">
+  <link rel="stylesheet" type="text/css" href="public/css/style.css">
+</head>
+
+<body>
+    
+    <h1>My Messages</h1>
+    
+    <div id="messages_from">
+        <!--<p>Example 1</p>
+        <p>Example 2</p>
+        <p>Example 3</p>-->
+    </div>
+    <div id="messages_body">
+        <!--<div class="left-message">
+            <p>This is left message</p>
+        </div>
+        <div class="right-message">
+            <p>This is right message</p>
+        </div>
+        <div class="left-message">
+            <p>This is left message</p>
+        </div>
+        <div class="left-message">
+            <p>This is left message</p>
+        </div>
+        <div class="right-message">
+            <p>This is right message</p>
+        </div>-->
+        <textarea name="body" id="send_textarea"></textarea>
+        <input type="button" id="send_msg_btn" name="send" value="Send Message">
+    </div>
+    
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.js"></script>
+    <script type="text/javascript">
+    /* global $ */
+    console.log("Sliced - " + window.location.hash.slice(1));
+    
+    var sender = window.location.hash.split('#')[1];
+    var username;
+    
+        $(document).ready(function() {
+            
+            $(window).on('hashchange', function() {
+                window.location.reload();
+            });
+             
+            $.ajax({
+                type: "GET",
+                url: 'api/musers',
+                processData: false,
+                contentType: 'application/json',
+                data: '',
+                success: function(res) {
+                    var results = JSON.parse(res);
+                    $.each(results, function(index) {
+                        $('#messages_from').append('<div id="user'+index+'" data-id="'+results[index].id+'"><p>'+results[index].username+'</p></div>');
+                        $('#user'+index).click(function() {
+                            window.location = 'messages.html#' + ($(this).attr('data-id'));
+                        });
+                    });
+                },
+                error: function(res) {
+                        
+                }
+            });
+            
+            
+            $("#send_msg_btn").click(function() {
+                $.ajax({
+                    type: "POST",
+                    url: 'api/message',
+                    processData: false,
+                    contentType: 'application/json',
+                    data: '{ "body": "' + $("#send_textarea").val() + '", "receiver": "' + sender + '" }',
+                    success: function(res) {
+                        //console.log(JSON.parse(res));
+                        window.location.reload();
+                    },
+                    error: function(res) {
+                        console.log(res);
+                        //console.log(JSON.parse(res.responseText));
+                    }
+                });
+            });
+            
+            $.ajax({
+                    type: "GET",
+                    url: 'api/messages?sender='+sender,
+                    processData: false,
+                    contentType: 'application/json',
+                    data: '',
+                    success: function(res) {
+                        var results = JSON.parse(res);
+                        
+                        $.ajax({
+                            type: "GET",
+                            url: 'api/users',
+                            processData: false,
+                            contentType: 'application/json',
+                            data: '',
+                            success: function(res2) {
+                                username = res2;
+                                
+                                $.each(results, function(i) {
+                                    if ( results[i].receiver == username ) {
+                                        //$("#messages_body").append(
+                                            //'<div class="left-message"><p>'+results[i].body+'</p></div>'
+                                        //);
+                                        $('<div class="left-message"><p>'+results[i].body+'</p></div>').insertBefore("#send_textarea");
+                                    } else {
+                                        //$("#messages_body").append(
+                                            //'<div class="right-message"><p>'+results[i].body+'</p></div>'
+                                        //);
+                                        $('<div class="right-message"><p>'+results[i].body+'</p></div>').insertBefore("#send_textarea");
+                                    }
+                                    });
+                            },
+                            error: function(res2) {
+                                console.log(res);
+                            }
+                        });
+                    },
+                    error: function(res) {
+                        console.log(res);
+                    }
+                });
+        });
+    </script>
+    
+</body>
+</html>

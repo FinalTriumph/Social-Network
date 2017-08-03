@@ -64,4 +64,11 @@ foreach ($messages as $message) {
 
 }
 /*///////*/
+/*
+SELECT messages.id, messages.body, s.username AS Sender, r.username AS Receiver
+FROM messages
+LEFT JOIN users s ON messages.sender = s.id
+LEFT JOIN users r ON messages.receiver = r.id
+WHERE r.username=:user OR s.username=:user
+*/
 ?>
