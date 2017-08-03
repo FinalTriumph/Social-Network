@@ -154,18 +154,19 @@ if (isset($_GET['username'])) {
             echo '<input type="submit" name="follow" id="foll_unfoll_btn" value="Follow">';
         }
         echo '</form>';
-    } else { 
-        echo '<button id="new_post_btn">NEW POST</button>';
+    } else {
+        ?>
+        <button id="new_post_btn">NEW POST</button>
     
     
-        echo '<form id="new_post_form" action="profile.php?username=<?php echo $username; ?>" method="post" enctype="multipart/form-data">';
-            echo '<input type="button" name="close" id="close_form" value="x"><br /><br />';
-            echo '<textarea name="postbody" rows="8" cols="80"></textarea>';
-            echo '<br />Upload an image:';
-            echo '<input type="file" name="postimg" class="post_btn">';
-            echo '<input type="submit" name="post" class="post_btn" value="Post">';
-        echo '</form>';
-        
+        <form id="new_post_form" action="profile.php?username=<?php echo $username; ?>" method="post" enctype="multipart/form-data">
+            <input type="button" name="close" id="close_form" value="x"><br /><br />
+            <textarea name="postbody" rows="8" cols="80"></textarea>
+            <br />Upload an image:
+            <input type="file" name="postimg" class="post_btn">
+            <input type="submit" name="post" class="post_btn" value="Post">
+        </form>
+        <?php
     }
     ?>
     
@@ -175,86 +176,123 @@ if (isset($_GET['username'])) {
     <script type="text/javascript">
     /* global $ */
     
+        var start = 0;
+        var working = true;
+    
         function scrollToAnchor(aid) {
+            try {
             var aTag = $(aid);
             $('html, body').animate({scrollTop: aTag.offset().top}, 'slow');
+            } catch (error) {
+                console.log(error);
+            }
         }
         
         
         $(document).ready(function() {
             
-            $.ajax({
-                type: "GET",
-                url: 'api/profileposts?username=<?php echo $username; ?>',
-                processData: false,
-                contentType: 'application/json',
-                data: '',
-                success: function(res) {
-                    var posts = JSON.parse(res);
-                    $.each(posts, function(index) {
-                        
-                        
-                        $("#timeline").append(
-                            '<div class="post" id="'+posts[index].PostId+'"><p>'+posts[index].PostBody+'</p><img src="'+posts[index].PostImage+'" /><div class="post_footer"> - Posted by '+posts[index].PostedBy+' on '+posts[index].PostDate+'<button data-id="'+posts[index].PostId+'">'+posts[index].Likes+' Likes</button><button data-postid="'+posts[index].PostId+'">Comments</button></div><div class="comments" data-commentsdiv="'+posts[index].PostId+'"><hr /></div></div>'
-                            );
-                        
-                    });
-                    
-                    $('[data-id]').click(function() {
-                        var buttonid = $(this).attr('data-id');
-                        $.ajax({
-                            type: "POST",
-                            url: 'api/likes?id=' + $(this).attr('data-id'),
-                            processData: false,
-                            contentType: 'application/json',
-                            data: '',
-                            success: function(res) {
-                                var likes = JSON.parse(res).Likes;
-                                $('[data-id="'+buttonid+'"]').html(likes + ' Likes');
-                            },
-                            error: function() {
-                                console.log(JSON.parse(res.responseText));
-                            }
-                        });
-                    });
-                    
-                    $('[data-postid]').click(function() { 
-                        var buttonid = $(this).attr('data-postid');
-                        if ($('[data-commentsdiv="'+buttonid+'"]').css('display') == 'block') {
-                            $('[data-commentsdiv="'+buttonid+'"]').css('display', 'none');
-                            $('[data-commentsdiv="'+buttonid+'"]').html('<hr />');
-                        } else {
-                            $('[data-commentsdiv="'+buttonid+'"]').css('display', 'block');
-                            $('[data-commentsdiv="'+buttonid+'"]').html('<hr /><p>Loading comments...</p><hr />');
-                            $.ajax({
-                                type: "GET",
-                                url: 'api/comments?postid=' + $(this).attr('data-postid'),
-                                processData: false,
-                                contentType: 'application/json',
-                                data: '',
-                                success: function(res) {
-                                    $('[data-commentsdiv="'+buttonid+'"]').html('<hr />');
-                                    if (res == "No comments") {
-                                        $('[data-commentsdiv="'+buttonid+'"]').append('<p>No comments to show</p><hr />');
-                                    } else {
-                                        var comments = JSON.parse(res);
-                                        $.each(comments, function(index) {
-                                            $('[data-commentsdiv="'+buttonid+'"]').append('<p>'+comments[index]['Comment']+'<br />From '+comments[index]['CommentedBy']+' - '+comments[index]['CommentedAt']+'</p><hr />');
-                                        });
-                                    }
-                                },
-                                error: function() {
-                                    $('[data-commentsdiv="'+buttonid+'"]').html("<hr /><p>Error: couldn't load comments properly</p>");
-                                    console.log(JSON.parse(res.responseText));
-                                }
-                            });
+            function getPosts() {
+                $.ajax({
+                    type: "GET",
+                    url: 'api/profileposts?username=<?php echo $username; ?>&start='+start+'',
+                    processData: false,
+                    contentType: 'application/json',
+                    data: '',
+                    success: function(res) {
+                        if ($("#loading_posts")) {
+                            $("#loading_posts").remove();
                         }
                         
-                    });
-                    scrollToAnchor(window.location.hash);
-                },
-                error: function(res) {
-                    console.log(JSON.parse(res.responseText));
+                        if (res == "No posts") {
+                            
+                            $("#timeline").append(
+                            "<div class='bottom_msg'>No more posts to show</div>"
+                            );
+                        
+                        } else {
+                            var posts = JSON.parse(res);
+                            $.each(posts, function(index) {
+                                $("#timeline").append(
+                                    '<div class="post" id="'+posts[index].PostId+'"><p>'+posts[index].PostBody+'</p><img src="'+posts[index].PostImage+'" /><div class="post_footer"> - Posted by '+posts[index].PostedBy+' on '+posts[index].PostDate+'<button data-id="'+posts[index].PostId+'">'+posts[index].Likes+' Likes</button><button data-postid="'+posts[index].PostId+'">Comments</button></div><div class="comments" data-commentsdiv="'+posts[index].PostId+'"><hr /></div></div>'
+                                    );
+                            });
+                            
+                            $('[data-id]').click(function() {
+                                var buttonid = $(this).attr('data-id');
+                                $.ajax({
+                                    type: "POST",
+                                    url: 'api/likes?id=' + $(this).attr('data-id'),
+                                    processData: false,
+                                    contentType: 'application/json',
+                                    data: '',
+                                    success: function(res) {
+                                        var likes = JSON.parse(res).Likes;
+                                        $('[data-id="'+buttonid+'"]').html(likes + ' Likes');
+                                    },
+                                    error: function() {
+                                        console.log(JSON.parse(res.responseText));
+                                    }
+                                });
+                            });
+                            
+                            $('[data-postid]').click(function() { 
+                                var buttonid = $(this).attr('data-postid');
+                                if ($('[data-commentsdiv="'+buttonid+'"]').css('display') == 'block') {
+                                    $('[data-commentsdiv="'+buttonid+'"]').css('display', 'none');
+                                    $('[data-commentsdiv="'+buttonid+'"]').html('<hr />');
+                                } else {
+                                    $('[data-commentsdiv="'+buttonid+'"]').css('display', 'block');
+                                    $('[data-commentsdiv="'+buttonid+'"]').html('<hr /><p>Loading comments...</p><hr />');
+                                    $.ajax({
+                                        type: "GET",
+                                        url: 'api/comments?postid=' + $(this).attr('data-postid'),
+                                        processData: false,
+                                        contentType: 'application/json',
+                                        data: '',
+                                        success: function(res) {
+                                            $('[data-commentsdiv="'+buttonid+'"]').html('<hr />');
+                                            if (res == "No comments") {
+                                                $('[data-commentsdiv="'+buttonid+'"]').append('<p>No comments to show</p><hr />');
+                                            } else {
+                                                var comments = JSON.parse(res);
+                                                $.each(comments, function(index) {
+                                                    $('[data-commentsdiv="'+buttonid+'"]').append('<p>'+comments[index]['Comment']+'<br />From '+comments[index]['CommentedBy']+' - '+comments[index]['CommentedAt']+'</p><hr />');
+                                                });
+                                            }
+                                        },
+                                        error: function() {
+                                            $('[data-commentsdiv="'+buttonid+'"]').html("<hr /><p>Error: couldn't load comments properly</p>");
+                                            console.log(JSON.parse(res.responseText));
+                                        }
+                                    });
+                                }
+                                
+                            });
+                            scrollToAnchor(window.location.hash);
+                            
+                            start += 5;
+                            setTimeout(function() {
+                                working = false;
+                            }, 1000);
+                        }
+                    },
+                    error: function(res) {
+                        console.log(JSON.parse(res.responseText));
+                    }
+                });
+            }
+            
+            getPosts();
+            
+            $(window).scroll(function() {
+                if($(this).scrollTop() + 1 >= $('body').height() - $(window).height()) {
+                    if (working == false) {
+                        working = true;
+                        $("#timeline").append(
+                            "<div id='loading_posts' class='bottom_msg'>Loading ...</div>"
+                            );
+                        getPosts();
+                    }
                 }
             });
         });

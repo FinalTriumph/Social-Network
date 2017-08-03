@@ -70,13 +70,17 @@ if ($_SERVER['REQUEST_METHOD'] == "GET") {
         
         $token = $_COOKIE['SNID'];
         
+        $start = (int)$_GET['start'];
+        
         $userid = $db->query('SELECT user_id FROM login_tokens WHERE token=:token', array(':token'=>sha1($token)))[0]['user_id'];
         
         $followingposts = $db->query('SELECT posts.id, posts.body, posts.posted_at, posts.postimg, posts.likes, users.`username` FROM users, posts, followers 
         WHERE posts.user_id = followers.user_id 
         AND users.id = posts.user_id 
         AND follower_id = :userid
-        ORDER BY posts.posted_at DESC', array(':userid'=>$userid));
+        ORDER BY posts.posted_at DESC 
+        LIMIT 5 
+        OFFSET '.$start.'', array(':userid'=>$userid));
         
         $response = "[";
         
@@ -92,19 +96,28 @@ if ($_SERVER['REQUEST_METHOD'] == "GET") {
             $response .= "},";
              
         }
+        //$response = substr($response, 0, strlen($response)-1);
+        //$response .= "]";
+        
         $response = substr($response, 0, strlen($response)-1);
-        $response .= "]";
+        if (strlen($response) !== 0) {
+            $response .= "]";
+        } else {
+            $response = "No posts";
+        }
         
         echo $response;
         
     } else if ($_GET['url'] == "profileposts") {
-        
+        $start = (int)$_GET['start'];
         $userid = $db->query('SELECT id FROM users WHERE username=:username', array(':username'=>$_GET['username']))[0]['id'];
         
         $followingposts = $db->query('SELECT posts.id, posts.body, posts.posted_at, posts.postimg, posts.likes, users.`username` FROM users, posts
         WHERE users.id = posts.user_id
         AND users.id = :userid
-        ORDER BY posts.posted_at DESC', array(':userid'=>$userid));
+        ORDER BY posts.posted_at DESC 
+        LIMIT 5 
+        OFFSET '.$start.'', array(':userid'=>$userid));
         
         $response = "[";
         
@@ -120,8 +133,15 @@ if ($_SERVER['REQUEST_METHOD'] == "GET") {
             $response .= "},";
              
         }
+        //$response = substr($response, 0, strlen($response)-1);
+        //$response .= "]";
+        
         $response = substr($response, 0, strlen($response)-1);
-        $response .= "]";
+        if (strlen($response) !== 0) {
+            $response .= "]";
+        } else {
+            $response = "No posts";
+        }
         
         echo $response;
     }

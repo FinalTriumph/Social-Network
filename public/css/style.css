@@ -172,3 +172,6 @@ input[type='button']:hover, #new_post_btn:hover {
   border-radius: 2px;
   cursor: pointer;
 }
+.bottom_msg {
+  margin-top: 2em;
+}
